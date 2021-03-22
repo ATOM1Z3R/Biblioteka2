@@ -1,0 +1,47 @@
+﻿@model Domain.Models.Book
+
+<h4>Szczegóły ksiązki</h4><br />
+<div class="container">
+<div class="font-weight-bold"><h6>@Model.Name</h6></div>
+<div><b>Autor:</b> @Model.Author.FirstName @Model.Author.LastName</div>
+
+    
+<div>
+    <b>Data wydania:</b> @Model.ReleaseDate.ToShortDateString()<br />
+    <b>Dostępność: </b>@(Model.Quantity == 0 ? "Brak" : "Dostępny")
+</div><br />
+    <div><p class="font-weight-bold">Opis książki:</p><p class="text-justify">@Model.Description</p></div>
+    @if (User.Identity.IsAuthenticated && Model.Quantity>0)
+    {
+        <a class="btn btn-dark" onclick="return confirm('Czy chcesz na pewno dokonać rezerwacji?');" asp-controller="Reservation" asp-action="Reserve" asp-route-id="@Model.BookId">Rezerwuj</a>
+    }
+    @if (User.Identity.IsAuthenticated && User.IsInRole("emp"))
+    {
+        <div>
+            <br />
+            <h5>Lista rezerwacji</h5>
+
+            <table class="table table-striped">
+                
+                @foreach (var item in Model.Reservation)
+                {
+                    <tr>
+                        <td>
+                            @item.ReservationId
+                        </td>
+                        <td>
+                            @item.ReservationDate.ToShortDateString()
+                        </td>
+                        <td>
+                            @item.User.FristName @item.User.LastName
+                        </td>
+                        <td>
+                            @item.User.Email
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
+</div>

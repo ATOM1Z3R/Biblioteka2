@@ -1,0 +1,11 @@
+﻿@model Domain.Models.Author
+
+<h3>Potwierdzenie usunięcia.</h3>
+
+<h5>Czy na pewno chcesz usunąć z bazy autora "@Model.FirstName @Model.LastName"?</h5>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="AuthorId" />
+    <input type="submit" value="Usuń" class="btn btn-danger" />
+    <a class="btn btn-secondary" asp-action="Index">Wróć do listy</a>
+</form>

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Domain.Models.Author>
+
+<h4>Autorzy</h4>
+
+    <p><a class="btn btn-dark" asp-action="Create">Dodaj autora</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr class="thead-dark">
+            <th width="27%">
+                @Html.DisplayNameFor(model => model.AuthorId)
+            </th>
+            <th width="27%">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th width="27%">
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th width="15%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @item.AuthorId
+            </td>
+            <td>
+                @item.FirstName
+            </td>
+            <td>
+                @item.LastName
+            </td>
+            <td class="float-right">
+                <a class="btn btn-secondary" asp-action="Update" asp-route-id="@item.AuthorId">Zmień</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.AuthorId">Usuń</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

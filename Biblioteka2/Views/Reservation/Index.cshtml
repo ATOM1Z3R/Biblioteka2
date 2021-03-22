@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Domain.Models.Reservation>
+
+<h4>@(User.IsInRole("emp") ? "Rezerwacje użytkowników":"Moje rezerwacje")</h4><br />
+
+<table class="table table-striped">
+    <tr class="thead-dark">
+        @if (User.IsInRole("emp"))
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.ReservationId)
+            </th>
+        }
+
+        <th>
+            @Html.DisplayNameFor(model => model.Book.Name)
+        </th>
+        @if (User.IsInRole("emp"))
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.User.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.FristName) i @Html.DisplayNameFor(model => model.User.LastName) wypożyczającego
+            </th>
+        }
+
+        <th>
+            @Html.DisplayNameFor(model => model.ReservationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RetriveDate)
+        </th>
+        @if (User.IsInRole("emp"))
+        {
+            <th>
+
+            </th>
+        }
+        
+    </tr>
+    @foreach (var item in Model)
+    {
+<tr>
+    @if (User.IsInRole("emp"))
+    {
+        <td>
+            @item.ReservationId
+        </td>
+    }
+
+    <td>
+        @item.Book.Name
+    </td>
+    @if (User.IsInRole("emp"))
+    {
+        <td>
+            @item.User.Email
+        </td>
+        <td>
+            @item.User.FristName @item.User.LastName
+        </td>
+    }
+    <td>
+        @item.ReservationDate.ToShortDateString()
+    </td>
+    <td>
+        @if (item.RetriveDate != DateTime.MinValue)
+        {
+            @item.RetriveDate.ToShortDateString()
+        }
+
+    </td>
+    @if (User.IsInRole("emp"))
+    {
+        <td>
+            @if (item.RetriveDate == DateTime.MinValue)
+            {
+                <a class="btn btn-dark" onclick="return confirm('Czy potwierdzasz zwrot pozycji?');" asp-controller="Reservation" asp-action="Retrive" asp-route-id="@item.ReservationId">Zwrot</a>
+            }
+            else
+            {
+                <span>Zwrócono</span>
+            }
+
+        </td>
+    }
+
+</tr>
+    }
+</table>

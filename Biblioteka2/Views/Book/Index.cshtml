@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Domain.Models.Book>
+
+    <h4>Spis książek</h4>
+
+    @if (User.Identity.IsAuthenticated && User.IsInRole("emp"))
+    {
+        <p><a class="btn btn-dark" asp-action="Create">Dodaj nową książkę</a></p>
+    }
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr class="thead-dark">
+                <th width="21%">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th width="21%">
+                    Autor
+                </th>
+                <th width="21%">
+                    Dostępność
+                </th>
+                <th width="21%">
+                    @Html.DisplayNameFor(model => model.ReleaseDate)
+                </th>
+
+                @if (User.Identity.IsAuthenticated && User.IsInRole("emp"))
+                {
+                    <th width="16%"></th>
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    <a class="text-dark d-block" asp-action="Details" asp-route-id="@item.BookId">
+                        @item.Name
+                    </a>
+                </td>
+                <td>
+                    <a class="text-dark d-block" asp-action="Details" asp-route-id="@item.BookId">
+                        @item.Author.FirstName @item.Author.LastName
+                    </a>
+                </td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("emp"))
+                    {
+                        <a class="text-dark d-block" asp-action="Details" asp-route-id="@item.BookId">
+                            @(item.Quantity+" szt.")
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="text-dark d-block" asp-action="Details" asp-route-id="@item.BookId">
+                            @(item.Quantity == 0 ? "Brak": "Dostępny")
+                        </a>
+                    }
+
+                </td>
+                <td>
+                    <a class="text-dark d-block" asp-action="Details" asp-route-id="@item.BookId">
+                        @item.ReleaseDate.ToShortDateString()
+                    </a>
+                </td>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("emp"))
+                {
+                    <td class="float-right">
+                        <a class="btn btn-secondary" asp-action="Update" asp-route-id="@item.BookId">Zmień</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.BookId">Usuń</a>
+                    </td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
